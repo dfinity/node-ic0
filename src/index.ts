@@ -93,6 +93,7 @@ export class ReplicaCanister implements Canister {
                 if (typeof value === 'bigint') {
                     return value.toString();
                 }
+                // TODO: Principal, Blob, etc.
                 return value;
             }),
         );
