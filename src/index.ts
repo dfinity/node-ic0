@@ -87,8 +87,6 @@ export class ReplicaCanister implements Canister {
         const actor = await this.fetchActor();
         const result = await actor[method](...args);
 
-        console.log('RESULT:', result); ////
-
         // Convert to JSON-like object
         return JSON.parse(
             JSON.stringify(result, (_key, value) => {
