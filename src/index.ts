@@ -1,8 +1,6 @@
 import { Actor, ActorSubclass, HttpAgent, fetchCandid } from '@dfinity/agent';
 import { IDL } from '@dfinity/candid';
 
-const defaultDevServerHost = 'http://localhost:7700';
-
 export interface Canister {
     call(method: string, ...args: any[]): Promise<any>;
 }
@@ -55,7 +53,7 @@ export class ReplicaCanister implements Canister {
         this.agent = agent;
     }
 
-    private async fetchActor() {
+    private async _fetchActor() {
         if (this._actor) {
             return this._actor;
         }
@@ -84,7 +82,7 @@ export class ReplicaCanister implements Canister {
     }
 
     async call(method: string, ...args: any[]): Promise<any> {
-        const actor = await this.fetchActor();
+        const actor = await this._fetchActor();
         const result = await actor[method](...args);
 
         // Convert to JSON-like object
@@ -100,9 +98,31 @@ export class ReplicaCanister implements Canister {
     }
 }
 
+type Mocks = Record<string, (...args: any[]) => any>;
+
+export class MockCanister implements Canister {
+    public readonly mocks: Mocks;
+    public readonly fallback: Canister | undefined;
+
+    constructor(mocks: Mocks, fallback: Canister | undefined) {
+        this.mocks = mocks;
+        this.fallback = fallback;
+    }
+
+    async call(method: string, ...args: any[]): Promise<any> {
+        if (this.mocks.hasOwnProperty(method)) {
+            return this.mocks[method](...args);
+        }
+        if (this.fallback) {
+            return this.fallback.call(method, ...args);
+        }
+        throw new Error(`Unmocked canister method: \`${method}\``);
+    }
+}
+
 export function devCanister(
     alias: string,
-    host = defaultDevServerHost,
+    host = 'http://localhost:7700',
 ): DevCanister {
     return new DevCanister(alias, host);
 }
@@ -118,4 +138,8 @@ export function replicaCanister(
         }
     }
     return new ReplicaCanister(id, agent);
+}
+
+export function mockCanister(mocks: Mocks, parent?: Canister) {
+    return new MockCanister(mocks, parent);
 }
