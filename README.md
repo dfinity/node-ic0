@@ -5,7 +5,7 @@
 
 ---
 
-The `ic0` npm package makes it easier to interact with Internet Computer canisters
+The `ic0` npm package makes it easier to interact with Internet Computer (IC) canisters
 from development and testing environments. 
 
 ## Installation
@@ -14,9 +14,21 @@ from development and testing environments.
 npm i --save ic0
 ```
 
-## Replica Canister
+## Quick Start
 
-A **replica canister** represents a live canister running on the Internet Computer (or local replica), identified by a unique
+Add the following code to your webapp (works out of the box when hosted on the IC):
+
+```ts
+import ic from 'ic0';
+
+const ledger = ic('ryjl3-tyaaa-aaaaa-aaaba-cai'); // Access the IC ledger canister
+
+console.log(await ledger.call('name')) // Call (or query) the `name` method
+```
+
+## Replica Canisters
+
+A **replica canister** represents a live canister running on the IC (or local replica), identified by a unique
 [Principal](https://medium.com/dfinity/internet-computer-basics-part-1-principals-and-identities-215e8f239da4). 
 
 ### Basic usage:
@@ -46,7 +58,7 @@ const ledger = replicaCanister(principal, agent);
 console.log(await ledger.call('name')); // => { name: 'Internet Computer' }
 ```
 
-## Dev Canister
+## Dev Canisters
 
 A **dev canister** makes it possible to interact with canisters provided by a live-reload development environment
 such as the [Motoko Dev Server](https://github.com/dfinity/motoko-dev-server).
@@ -77,7 +89,7 @@ const backend = import.meta.env.DEV
 console.log(await backend.call('getValue')); // Call the `getValue()` method on the deployed canister when in production
 ```
 
-## Mock Canister
+## Mock Canisters
 
 A **mock canister** makes it easy to mock the behavior of your canisters for unit tests. 
 
