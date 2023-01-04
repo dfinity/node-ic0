@@ -98,7 +98,7 @@ export class ReplicaCanister implements Canister {
     }
 }
 
-type Mocks = Record<string, (...args: any[]) => any>;
+type Mocks = Record<string, (...args: any[]) => Promise<any>>;
 
 export class MockCanister implements Canister {
     public readonly mocks: Mocks;
