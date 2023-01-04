@@ -1,6 +1,6 @@
 {
     "name": "ic0",
-    "version": "0.0.2",
+    "version": "0.0.3",
     "description": "An easy-to-use JavaScript API for the Internet Computer.",
     "author": "Ryan Vandersmith (https://github.com/rvanasa)",
     "license": "Apache-2.0",
