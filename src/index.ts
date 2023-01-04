@@ -4,7 +4,8 @@ import { IDL } from '@dfinity/candid';
 export interface Canister {
     call(method: string, ...args: any[]): Promise<any>;
 }
-export class DevCanister implements Canister {
+
+class DevCanister implements Canister {
     public readonly alias: string;
     public readonly host: string;
 
@@ -42,7 +43,7 @@ export class DevCanister implements Canister {
     }
 }
 
-export class ReplicaCanister implements Canister {
+class ReplicaCanister implements Canister {
     public readonly id: string;
     public readonly agent: HttpAgent;
 
@@ -100,7 +101,7 @@ export class ReplicaCanister implements Canister {
 
 type Mocks = Record<string, (...args: any[]) => Promise<any>>;
 
-export class MockCanister implements Canister {
+class MockCanister implements Canister {
     public readonly mocks: Mocks;
     public readonly fallback: Canister | undefined;
 
@@ -111,7 +112,7 @@ export class MockCanister implements Canister {
 
     async call(method: string, ...args: any[]): Promise<any> {
         if (this.mocks.hasOwnProperty(method)) {
-            return this.mocks[method](...args);
+            return this.mocks[method].apply(this, args);
         }
         if (this.fallback) {
             return this.fallback.call(method, ...args);
