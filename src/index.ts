@@ -144,3 +144,5 @@ export function replicaCanister(
 export function mockCanister(mocks: Mocks, parent?: Canister) {
     return new MockCanister(mocks, parent);
 }
+
+export default replicaCanister;
