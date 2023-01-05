@@ -23,7 +23,7 @@ import ic from 'ic0';
 
 const ledger = ic('ryjl3-tyaaa-aaaaa-aaaba-cai'); // Access the IC ledger canister
 
-console.log(await ledger.call('name')) // Call (or query) the `name` method
+console.log(await ledger.call('name')) // Call the `name` method
 ```
 
 ## Replica Canisters
@@ -36,7 +36,7 @@ A **replica canister** represents a live canister running on the IC (or local re
 ```ts
 import { replicaCanister } from 'ic0';
 
-const principal = 'ryjl3-tyaaa-aaaaa-aaaba-cai'; // Canister ID (Principal)
+const principal = 'ryjl3-tyaaa-aaaaa-aaaba-cai'; // Principal for the IC ledger
 const ledger = replicaCanister(principal);
 
 console.log(await ledger.call('name')) // => { name: 'Internet Computer' }
@@ -51,7 +51,7 @@ import { replicaCanister } from 'ic0';
 import { HttpAgent } from '@dfinity/agent';
 
 const principal = 'ryjl3-tyaaa-aaaaa-aaaba-cai';
-const agent = new HttpAgent({ host: ... }); // Use a custom agent from `agent-js`
+const agent = new HttpAgent({ ... }); // Use a custom agent from `agent-js`
 
 const ledger = replicaCanister(principal, agent);
 
@@ -84,7 +84,7 @@ import { devCanister, replicaCanister } from 'ic0';
 
 const backend = import.meta.env.DEV
     ? devCanister('backend')
-    : replicaCanister('rrkah-fqaaa-aaaaa-aaaaq-cai'); // Deployed canister Principal
+    : replicaCanister('rrkah-fqaaa-aaaaa-aaaaq-cai'); // Principal of deployed canister
 
 console.log(await backend.call('getValue')); // Call the `getValue()` method on the deployed canister when in production
 ```
