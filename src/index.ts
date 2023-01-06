@@ -1,7 +1,7 @@
+import { replicaCanister } from './canister/replica';
+import { devCanister } from './canister/dev';
+import { mockCanister } from './canister/mock';
+
 export { Canister } from './canister';
-
-export { replicaCanister } from './canister/replica';
-export { devCanister } from './canister/dev';
-export { mockCanister } from './canister/mock';
-
-export default (await import('./canister/replica')).replicaCanister;
+export { replicaCanister, devCanister, mockCanister };
+export default replicaCanister;

@@ -1,4 +1,4 @@
-import { mockCanister } from '../src/index';
+import { mockCanister } from '../src';
 
 describe('mockCanister', () => {
     test('basic example', async () => {
