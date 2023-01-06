@@ -16,7 +16,7 @@ class DevCanister implements Canister {
 
     async call(method: string, ...args: any[]): Promise<any> {
         const response = await fetch(
-            `${this.host}/alias/${this.alias}/${method}`,
+            new URL(`/call/${this.alias}/${method}`, this.host),
             {
                 method: 'POST',
                 headers: {
