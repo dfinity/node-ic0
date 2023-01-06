@@ -1,5 +1,6 @@
 import { Actor, ActorSubclass, HttpAgent, fetchCandid } from '@dfinity/agent';
 import { IDL } from '@dfinity/candid';
+import fetch from 'cross-fetch';
 
 export interface Canister {
     call(method: string, ...args: any[]): Promise<any>;
