@@ -1,18 +1,15 @@
 import { HttpAgent } from '@dfinity/agent';
-import { agentCanister } from './canister/agentCanister';
-import { Canister, Network, Replica } from './types';
 import fetch from 'cross-fetch';
-
-export { devCanister } from './canister/devCanister';
-export { mockCanister } from './canister/mockCanister';
-export { Network, Replica, Canister };
+import { agentCanister } from './canister/agentCanister';
+import { devCanister } from './canister/devCanister';
+import { mockCanister } from './canister/mockCanister';
+import { Canister, Network, Replica } from './types';
 
 export const replica = (host?: string | HttpAgent | undefined): Replica => {
     let agent: HttpAgent;
     if (!host) {
         agent = new HttpAgent({ fetch });
-    }
-    if (typeof host === 'string') {
+    } else if (typeof host === 'string') {
         agent = new HttpAgent({ host, fetch });
     } else if (host instanceof HttpAgent) {
         agent = host;
@@ -33,4 +30,30 @@ export const replica = (host?: string | HttpAgent | undefined): Replica => {
     return (id: string) => agentCanister(agent, id);
 };
 
-export default replica('https://ic0.app');
+// Defer creating the agent for built-in replica values
+const deferredReplica = (...args: Parameters<typeof replica>): Replica => {
+    let deferred: Replica | undefined;
+    return (...replicaArgs) => {
+        if (!deferred) {
+            deferred = replica(...args);
+        }
+        return deferred(...replicaArgs);
+    };
+};
+
+const ic = deferredReplica('https://ic0.app');
+const local = deferredReplica('http://localhost:4943');
+
+const defaultExport = ic;
+Object.assign(defaultExport, {
+    ic,
+    local,
+    replica,
+    devCanister,
+    mockCanister,
+});
+
+module.exports = defaultExport;
+export default defaultExport;
+export { ic, local, devCanister, mockCanister };
+export type { Canister, Network, Replica };

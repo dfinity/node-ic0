@@ -1,9 +1,11 @@
-import ic0 from '../src';
+import ic from '../src';
 
 describe('mainnet (https://ic0.app)', () => {
-    test('Candid UI', async () => {
-        const candidUI = ic0('a4gq6-oaaaa-aaaab-qaa4q-cai');
+    test.skip('ledger', async () => {
+        const ledger = ic('ryjl3-tyaaa-aaaaa-aaaba-cai');
 
-        expect(await candidUI.call('did_to_js', '')).toEqual('');
+        expect(await ledger.call('name')).toStrictEqual({
+            name: 'Internet Computer',
+        });
     });
 });

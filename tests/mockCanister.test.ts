@@ -3,8 +3,8 @@ import { mockCanister } from '../src';
 describe('mockCanister', () => {
     test('basic example', async () => {
         const mock = mockCanister({
-            async echo(x: number) {
-                return x;
+            async echo(value: number) {
+                return value;
             },
         });
         expect(await mock.call('echo', 123)).toEqual(123);
@@ -12,8 +12,8 @@ describe('mockCanister', () => {
 
     test('fallback', async () => {
         const mockEcho = mockCanister({
-            async echo(x: number) {
-                return x;
+            async echo(value: number) {
+                return value;
             },
         });
         const mock = mockCanister(
