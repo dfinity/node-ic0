@@ -5,8 +5,7 @@
 
 ---
 
-The `ic0` npm package makes it easier to interact with Internet Computer (IC) canisters
-from development and testing environments. 
+The `ic0` npm package makes it easier to call Internet Computer (IC) canisters from outside of the IC. 
 
 ## Installation
 
@@ -16,7 +15,7 @@ npm i --save ic0
 
 ## Quick Start
 
-Add the following code to your webapp (works out of the box when hosted on the IC):
+Add the following code to your web application or Node.js script:
 
 ```ts
 import ic from 'ic0';
@@ -34,26 +33,33 @@ A **replica canister** represents a live canister running on the IC (or local re
 ### Basic usage:
 
 ```ts
-import { replicaCanister } from 'ic0';
+import ic from 'ic0';
 
-const principal = 'ryjl3-tyaaa-aaaaa-aaaba-cai'; // Principal for the IC ledger
-const ledger = replicaCanister(principal);
+const ledger = ic('ryjl3-tyaaa-aaaaa-aaaba-cai'); // Principal for the IC ledger
 
 console.log(await ledger.call('name')) // => { name: 'Internet Computer' }
 ```
 
 ### Advanced usage:
 
+Interact with canisters on your local replica:
+
+```ts
+import ic from 'ic0';
+
+const canister = ic.local('ryjl3-tyaaa-aaaaa-aaaba-cai'); // Access a local canister
+```
+
 Replica canisters use [agent-js](https://github.com/dfinity/agent-js) behind the scenes. 
 
 ```ts
-import { replicaCanister } from 'ic0';
+import { replica } from 'ic0';
 import { HttpAgent } from '@dfinity/agent';
 
-const principal = 'ryjl3-tyaaa-aaaaa-aaaba-cai';
-const agent = new HttpAgent({ ... }); // Use a custom agent from `agent-js`
+const agent = new HttpAgent({ ... }); // Create a custom agent from `@dfinity/agent`
+const ic = replica(agent); // Access a replica using the provided agent
 
-const ledger = replicaCanister(principal, agent);
+const ledger = ic('ryjl3-tyaaa-aaaaa-aaaba-cai');
 
 console.log(await ledger.call('name')); // => { name: 'Internet Computer' }
 ```
@@ -75,7 +81,7 @@ console.log(await backend.call('getValue')); // Call the `getValue()` method on 
 
 ### Advanced usage:
 
-This package makes it possible to seamlessly switch between `devCanister` and `replicaCanister` depending on the environment.
+This package makes it possible to seamlessly switch between a `devCanister` and `replicaCanister` depending on the environment.
 
 For example, you can use the `import.meta.env` property available in [Vite](https://vitejs.dev/):
 
@@ -91,7 +97,7 @@ console.log(await backend.call('getValue')); // Call the `getValue()` method on 
 
 ## Mock Canisters
 
-A **mock canister** makes it easy to mock the behavior of your canisters for unit tests. 
+A **mock canister** makes it easy to mock the behavior of a canister.
 
 ### Basic usage:
 
