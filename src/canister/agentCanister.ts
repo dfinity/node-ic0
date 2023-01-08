@@ -1,16 +1,16 @@
-import { Canister } from '../canister';
+import { Canister } from '../types';
 import { IDL } from '@dfinity/candid';
 import { Actor, ActorSubclass, HttpAgent, fetchCandid } from '@dfinity/agent';
 
-class ReplicaCanister implements Canister {
-    public readonly id: string;
+class AgentCanister implements Canister {
     public readonly agent: HttpAgent;
+    public readonly id: string;
 
     private _actor: ActorSubclass | undefined;
 
-    constructor(id: string, agent: HttpAgent) {
-        this.id = id;
+    constructor(agent: HttpAgent, id: string) {
         this.agent = agent;
+        this.id = id;
     }
 
     private async _fetchActor() {
@@ -18,7 +18,9 @@ class ReplicaCanister implements Canister {
             return this._actor;
         }
         const source = await fetchCandid(this.id, this.agent);
-        const didJsCanisterId = 'ryjl3-tyaaa-aaaaa-aaaba-cai';
+        const didJsCanisterId = this.agent.isLocal()
+            ? 'ryjl3-tyaaa-aaaaa-aaaba-cai'
+            : 'a4gq6-oaaaa-aaaab-qaa4q-cai';
         const didJsInterface: IDL.InterfaceFactory = ({ IDL }) =>
             IDL.Service({
                 did_to_js: IDL.Func([IDL.Text], [IDL.Opt(IDL.Text)], ['query']),
@@ -45,28 +47,21 @@ class ReplicaCanister implements Canister {
         const actor = await this._fetchActor();
         const result = await actor[method](...args);
 
-        // Convert to JSON-like object
-        return JSON.parse(
-            JSON.stringify(result, (_key, value) => {
-                if (typeof value === 'bigint') {
-                    return value.toString();
-                }
-                // TODO: Principal, Blob, etc.
-                return value;
-            }),
-        );
+        return result;
+
+        // // Convert to JSON-like object
+        // return JSON.parse(
+        //     JSON.stringify(result, (_key, value) => {
+        //         if (typeof value === 'bigint') {
+        //             return value.toString();
+        //         }
+        //         // TODO: Principal, Blob, etc.
+        //         return value;
+        //     }),
+        // );
     }
 }
 
-export function replicaCanister(
-    id: string,
-    agent: HttpAgent | undefined = undefined,
-): ReplicaCanister {
-    if (!agent) {
-        agent = new HttpAgent();
-        if (agent.isLocal()) {
-            agent.fetchRootKey();
-        }
-    }
-    return new ReplicaCanister(id, agent);
+export function agentCanister(agent: HttpAgent, id: string): AgentCanister {
+    return new AgentCanister(agent, id);
 }

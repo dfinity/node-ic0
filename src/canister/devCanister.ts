@@ -1,4 +1,4 @@
-import { Canister } from '../canister';
+import { Canister } from '../types';
 
 class DevCanister implements Canister {
     public readonly alias: string;

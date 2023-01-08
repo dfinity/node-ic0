@@ -1,4 +1,4 @@
-import { Canister } from '../canister';
+import { Canister } from '../types';
 
 type Mocks = Record<string, (...args: any[]) => Promise<any>>;
 
