@@ -5,7 +5,7 @@
 
 ---
 
-The `ic0` npm package makes it easier to call Internet Computer (IC) canisters from outside of the IC. 
+The `ic0` package is a simple, straightfoward way to interact with canisters running on the [Internet Computer](https://internetcomputer.org/) (IC). 
 
 ## Installation
 
@@ -15,26 +15,39 @@ npm i --save ic0
 
 ## Quick Start
 
-Add the following code to your web application or Node.js script:
+Try running the following code from Node.js or a web application:
 
 ```ts
 import ic from 'ic0';
 
-const ledger = ic('ryjl3-tyaaa-aaaaa-aaaba-cai'); // Access the IC ledger canister
+const ledger = ic('ryjl3-tyaaa-aaaaa-aaaba-cai'); // Ledger canister
 
-console.log(await ledger.call('name')); // Call the `name` method
+console.log(await ledger.call('name')); // Call the `name()` method
 ```
 
-## Replica Canisters
+Easily call any Internet Computer canister using the following syntax:
 
-A **replica canister** represents a live canister running on the IC (or local replica), identified by a unique
-[Principal](https://medium.com/dfinity/internet-computer-basics-part-1-principals-and-identities-215e8f239da4). 
+```ts
+import ic from 'ic0';
+
+ic(canisterId).call(method, ...args); // IC mainnet
+
+ic.local(canisterId).call(method, ...args); // Local replica
+```
+
+## Local Canisters
+
+The [`dfx start`](https://internetcomputer.org/docs/current/references/cli-reference/dfx-start) command hosts a local execution environment for developing canister smart contracts. Here is an example of how to call a local canister:
+
+```ts
+const backend = ic.local('rrkah-fqaaa-aaaaa-aaaaq-cai'); // Access a local canister
+
+backend.call('myFunction', 123); // Call `myFunction(123)`
+```
 
 ### Basic usage:
 
 ```ts
-import ic from 'ic0';
-
 const ledger = ic('ryjl3-tyaaa-aaaaa-aaaba-cai'); // Principal for the IC ledger
 
 console.log(await ledger.call('name')); // => { name: 'Internet Computer' }
@@ -53,14 +66,6 @@ const ic = replica(new HttpAgent({ ... })); // Use a custom agent from `@dfinity
 const ledger = ic('ryjl3-tyaaa-aaaaa-aaaba-cai');
 
 console.log(await ledger.call('name')); // => { name: 'Internet Computer' }
-```
-
-Access a canister on your local replica (served by `dfx start`):
-
-```ts
-import ic from 'ic0';
-
-const canister = ic.local('rrkah-fqaaa-aaaaa-aaaaq-cai');
 ```
 
 ## Dev Canisters
@@ -85,18 +90,18 @@ This package makes it possible to seamlessly switch between a `devCanister` and 
 For example, you can use the `import.meta.env` property available in [Vite](https://vitejs.dev/):
 
 ```ts
-import { devCanister, replicaCanister } from 'ic0';
+import { devCanister, ic } from 'ic0';
 
 const backend = import.meta.env.DEV
     ? devCanister('backend')
-    : replicaCanister('rrkah-fqaaa-aaaaa-aaaaq-cai'); // Principal of deployed canister
+    : ic('rrkah-fqaaa-aaaaa-aaaaq-cai'); // Deployed canister
 
 console.log(await backend.call('getValue')); // Call the `getValue()` method on the deployed canister when in production
 ```
 
 ## Mock Canisters
 
-A **mock canister** makes it easy to mock the behavior of a canister.
+A **mock canister** makes it easy to [mock](https://stackoverflow.com/a/2666006) the behavior of a canister.
 
 ### Basic usage:
 
@@ -141,7 +146,7 @@ console.log(await mock.call('runMock')); // => 456
 
 Check out the following GitHub repositories for more IC-related npm packages:
 
-- [mo-dev](https://github.com/dfinity/motoko-dev-server): a live-reload server for local Motoko dapp development
 - [agent-js](https://github.com/dfinity/agent-js): a collection of npm packages for building on the Internet Computer
 - [node-motoko](https://github.com/dfinity/node-motoko): run Motoko programs directly in the browser
+- [mo-dev](https://github.com/dfinity/motoko-dev-server): a live-reload server for local Motoko dapp development
 - [@infu/icblast](https://github.com/infu/icblast): a community-built library for exploring the IC and writing integration tests
