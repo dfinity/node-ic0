@@ -22,7 +22,7 @@ import ic from 'ic0';
 
 const ledger = ic('ryjl3-tyaaa-aaaaa-aaaba-cai'); // Access the IC ledger canister
 
-console.log(await ledger.call('name')) // Call the `name` method
+console.log(await ledger.call('name')); // Call the `name` method
 ```
 
 ## Replica Canisters
@@ -37,31 +37,30 @@ import ic from 'ic0';
 
 const ledger = ic('ryjl3-tyaaa-aaaaa-aaaba-cai'); // Principal for the IC ledger
 
-console.log(await ledger.call('name')) // => { name: 'Internet Computer' }
+console.log(await ledger.call('name')); // => { name: 'Internet Computer' }
 ```
 
 ### Advanced usage:
 
-Interact with canisters on your local replica:
-
-```ts
-import ic from 'ic0';
-
-const canister = ic.local('ryjl3-tyaaa-aaaaa-aaaba-cai'); // Access a local canister
-```
-
-Replica canisters use [agent-js](https://github.com/dfinity/agent-js) behind the scenes. 
+Replica canisters use [agent-js](https://github.com/dfinity/agent-js) behind the scenes.
 
 ```ts
 import { replica } from 'ic0';
 import { HttpAgent } from '@dfinity/agent';
 
-const agent = new HttpAgent({ ... }); // Create a custom agent from `@dfinity/agent`
-const ic = replica(agent); // Access a replica using the provided agent
+const ic = replica(new HttpAgent({ ... })); // Use a custom agent from `@dfinity/agent`
 
 const ledger = ic('ryjl3-tyaaa-aaaaa-aaaba-cai');
 
 console.log(await ledger.call('name')); // => { name: 'Internet Computer' }
+```
+
+Access a canister on your local replica (served by `dfx start`):
+
+```ts
+import ic from 'ic0';
+
+const canister = ic.local('rrkah-fqaaa-aaaaa-aaaaq-cai');
 ```
 
 ## Dev Canisters
