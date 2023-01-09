@@ -1,4 +1,4 @@
-const ic = require('../lib');
+const ic = require('..');
 
 (async () => {
     const ledger = ic('ryjl3-tyaaa-aaaaa-aaaba-cai');
