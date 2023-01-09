@@ -5,7 +5,9 @@ import { devCanister } from './canister/devCanister';
 import { mockCanister } from './canister/mockCanister';
 import { Canister, Network, Replica } from './types';
 
-export const replica = (host?: string | HttpAgent | undefined): Replica => {
+type AgentReplica = Replica<ReturnType<typeof agentCanister>>;
+
+const replica = (host?: string | HttpAgent | undefined): AgentReplica => {
     let agent: HttpAgent;
     if (!host) {
         agent = new HttpAgent({ fetch });
@@ -31,8 +33,8 @@ export const replica = (host?: string | HttpAgent | undefined): Replica => {
 };
 
 // Defer creating the agent for built-in replica values
-const deferredReplica = (...args: Parameters<typeof replica>): Replica => {
-    let deferred: Replica | undefined;
+const deferredReplica = (...args: Parameters<typeof replica>): AgentReplica => {
+    let deferred: AgentReplica | undefined;
     return (...replicaArgs) => {
         if (!deferred) {
             deferred = replica(...args);
@@ -52,9 +54,10 @@ Object.assign(defaultExport, {
     replica,
     devCanister,
     mockCanister,
+    __esModule: true, // Import as ES Module
 });
 
 module.exports = defaultExport;
 export default defaultExport;
-export { ic, local, devCanister, mockCanister };
+export { ic, local, replica, devCanister, mockCanister };
 export type { Canister, Network, Replica };

@@ -3,8 +3,8 @@ export interface Network {
     host: string;
 }
 
-export interface Replica {
-    (id: string): Canister;
+export interface Replica<T extends Canister> {
+    (id: string): T;
 }
 
 export interface Canister {
