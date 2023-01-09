@@ -46,6 +46,7 @@ const local = deferredReplica('http://localhost:4943');
 
 const defaultExport = ic;
 Object.assign(defaultExport, {
+    default: defaultExport,
     ic,
     local,
     replica,
