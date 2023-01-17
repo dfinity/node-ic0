@@ -2,6 +2,8 @@ import { Canister } from '../types';
 import { IDL } from '@dfinity/candid';
 import { Actor, ActorSubclass, HttpAgent, fetchCandid } from '@dfinity/agent';
 
+const didJsCache = new Map<string, string>();
+
 class AgentCanister implements Canister {
     public readonly agent: HttpAgent;
     public readonly id: string;
@@ -17,19 +19,27 @@ class AgentCanister implements Canister {
         if (this._actor) {
             return this._actor;
         }
-        const source = await fetchCandid(this.id, this.agent);
-        const didJsCanisterId = this.agent.isLocal()
-            ? 'ryjl3-tyaaa-aaaaa-aaaba-cai'
-            : 'a4gq6-oaaaa-aaaab-qaa4q-cai';
-        const didJsInterface: IDL.InterfaceFactory = ({ IDL }) =>
-            IDL.Service({
-                did_to_js: IDL.Func([IDL.Text], [IDL.Opt(IDL.Text)], ['query']),
+        let js = didJsCache.get(this.id);
+        if (!js) {
+            const source = await fetchCandid(this.id, this.agent);
+            const didJsCanisterId = this.agent.isLocal()
+                ? 'ryjl3-tyaaa-aaaaa-aaaba-cai'
+                : 'a4gq6-oaaaa-aaaab-qaa4q-cai';
+            const didJsInterface: IDL.InterfaceFactory = ({ IDL }) =>
+                IDL.Service({
+                    did_to_js: IDL.Func(
+                        [IDL.Text],
+                        [IDL.Opt(IDL.Text)],
+                        ['query'],
+                    ),
+                });
+            const didJs: ActorSubclass = Actor.createActor(didJsInterface, {
+                canisterId: didJsCanisterId,
+                agent: this.agent,
             });
-        const didJs: ActorSubclass = Actor.createActor(didJsInterface, {
-            canisterId: didJsCanisterId,
-            agent: this.agent,
-        });
-        const js = ((await didJs.did_to_js(source)) as [string])[0];
+            js = ((await didJs.did_to_js(source)) as [string])[0];
+            didJsCache.set(this.id, js);
+        }
         const candid = await eval(
             `import("data:text/javascript;charset=utf-8,${encodeURIComponent(
                 js,
