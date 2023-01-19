@@ -4,7 +4,7 @@ import { deferredReplica, replica } from './replica';
 import { Canister, Network, Replica } from './types';
 
 const ic = deferredReplica('https://ic0.app');
-const local = deferredReplica('http://localhost:4943');
+const local = deferredReplica('http://localhost:4943', { local: true });
 
 // Configure exports for TS, CommonJS, and ESM
 const defaultExport = ic;

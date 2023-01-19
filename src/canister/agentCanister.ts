@@ -1,6 +1,7 @@
-import { Canister } from '../types';
-import { IDL } from '@dfinity/candid';
 import { Actor, ActorSubclass, HttpAgent, fetchCandid } from '@dfinity/agent';
+import { IDL } from '@dfinity/candid';
+import fetch from 'cross-fetch';
+import { Canister } from '../types';
 
 const didJsCache = new Map<string, string>();
 
@@ -22,9 +23,12 @@ class AgentCanister implements Canister {
         let js = didJsCache.get(this.id);
         if (!js) {
             const source = await fetchCandid(this.id, this.agent);
-            const didJsCanisterId = this.agent.isLocal()
-                ? 'ryjl3-tyaaa-aaaaa-aaaba-cai'
-                : 'a4gq6-oaaaa-aaaab-qaa4q-cai';
+            // TODO: use local Candid UI canister
+            const didJsAgent = new HttpAgent({
+                host: 'https://ic0.app',
+                fetch,
+            }); // mainnet
+            const didJsCanisterId = 'a4gq6-oaaaa-aaaab-qaa4q-cai';
             const didJsInterface: IDL.InterfaceFactory = ({ IDL }) =>
                 IDL.Service({
                     did_to_js: IDL.Func(
@@ -35,7 +39,7 @@ class AgentCanister implements Canister {
                 });
             const didJs: ActorSubclass = Actor.createActor(didJsInterface, {
                 canisterId: didJsCanisterId,
-                agent: this.agent,
+                agent: didJsAgent,
             });
             js = ((await didJs.did_to_js(source)) as [string])[0];
             didJsCache.set(this.id, js);

@@ -8,6 +8,7 @@ export type AgentReplica = Replica<ReturnType<typeof agentCanister>>;
 // Define an IC replica from the given hostname (e.g. `https://ic0.app`)
 export const replica = (
     host?: string | HttpAgent | undefined,
+    options: { local?: boolean } = {},
 ): AgentReplica => {
     let agent: HttpAgent;
     if (!host) {
@@ -22,7 +23,7 @@ export const replica = (
         );
     }
     // Fetch root key for local replica
-    if (agent.isLocal()) {
+    if (options.local) {
         agent.fetchRootKey().catch((err) => {
             console.warn(
                 'Unable to fetch root key (check to ensure that your local replica is running)',
