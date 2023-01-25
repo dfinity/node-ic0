@@ -1,9 +1,9 @@
 import { HttpAgent } from '@dfinity/agent';
 import fetch from 'cross-fetch';
-import { agentCanister } from './canister/agentCanister';
+import { agentCanister, AgentCanister } from './canister/agentCanister';
 import { Replica } from './types';
 
-export type AgentReplica = Replica<ReturnType<typeof agentCanister>>;
+export type AgentReplica = Replica<AgentCanister>;
 
 // Define an IC replica from the given hostname (e.g. `https://ic0.app`)
 export const replica = (

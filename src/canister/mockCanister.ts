@@ -1,8 +1,8 @@
 import { Canister } from '../types';
 
-type Mocks = Record<string, (...args: any[]) => Promise<any>>;
+export type Mocks = Record<string, (...args: any[]) => Promise<any>>;
 
-class MockCanister implements Canister {
+export class MockCanister implements Canister {
     public readonly mocks: Mocks;
     public readonly fallback: Canister | undefined;
 

@@ -5,7 +5,7 @@ import { Canister } from '../types';
 
 const didJsCache = new Map<string, string>();
 
-class AgentCanister implements Canister {
+export class AgentCanister implements Canister {
     public readonly agent: HttpAgent;
     public readonly id: string;
 
