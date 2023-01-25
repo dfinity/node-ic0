@@ -1,7 +1,9 @@
-import { devCanister } from './canister/devCanister';
-import { mockCanister } from './canister/mockCanister';
+import { devCanister, DevCanister } from './canister/devCanister';
+import { mockCanister, MockCanister, Mocks } from './canister/mockCanister';
 import { deferredReplica, replica } from './replica';
 import { Canister, Network, Replica } from './types';
+import { HttpAgent } from '@dfinity/agent';
+import { agentCanister, AgentCanister } from './canister/agentCanister';
 
 const ic = deferredReplica('https://ic0.app');
 const local = deferredReplica('http://localhost:4943', { local: true });
@@ -13,11 +15,29 @@ Object.assign(defaultExport, {
     ic,
     local,
     replica,
+    agentCanister,
     devCanister,
     mockCanister,
+    HttpAgent,
     __esModule: true, // Recognize as ES Module
 });
 module.exports = defaultExport;
 export default defaultExport;
-export { ic, local, replica, devCanister, mockCanister };
-export type { Canister, Network, Replica };
+export {
+    ic,
+    local,
+    replica,
+    agentCanister,
+    devCanister,
+    mockCanister,
+    HttpAgent,
+};
+export type {
+    Canister,
+    Network,
+    Replica,
+    AgentCanister,
+    DevCanister,
+    MockCanister,
+    Mocks,
+};
