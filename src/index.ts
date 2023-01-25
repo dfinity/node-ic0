@@ -1,9 +1,9 @@
+import { HttpAgent } from '@dfinity/agent';
+import { agentCanister, AgentCanister } from './canister/agentCanister';
 import { devCanister, DevCanister } from './canister/devCanister';
 import { mockCanister, MockCanister, Mocks } from './canister/mockCanister';
 import { deferredReplica, replica } from './replica';
 import { Canister, Network, Replica } from './types';
-import { HttpAgent } from '@dfinity/agent';
-import { agentCanister, AgentCanister } from './canister/agentCanister';
 
 const ic = deferredReplica('https://ic0.app');
 const local = deferredReplica('http://localhost:4943', { local: true });
@@ -41,3 +41,4 @@ export type {
     MockCanister,
     Mocks,
 };
+
