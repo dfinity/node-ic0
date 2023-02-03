@@ -58,45 +58,13 @@ console.log(await ledger.call('name')); // => { name: 'Internet Computer' }
 Replica canisters use [agent-js](https://github.com/dfinity/agent-js) behind the scenes.
 
 ```ts
-import { replica } from 'ic0';
-import { HttpAgent } from '@dfinity/agent';
+import { replica, HttpAgent } from 'ic0';
 
 const ic = replica(new HttpAgent({ ... })); // Use a custom agent from `@dfinity/agent`
 
 const ledger = ic('ryjl3-tyaaa-aaaaa-aaaba-cai');
 
 console.log(await ledger.call('name')); // => { name: 'Internet Computer' }
-```
-
-## Dev Canisters
-
-A **dev canister** makes it possible to interact with canisters provided by a live-reload development environment
-such as the [Motoko Dev Server](https://github.com/dfinity/motoko-dev-server).
-
-### Basic usage:
-
-```ts
-import { devCanister } from 'ic0';
-
-const backend = devCanister('backend'); // Canister alias specified in your `dfx.json` file
-
-console.log(await backend.call('getValue')); // Call the `getValue()` method on your `backend` canister
-```
-
-### Advanced usage:
-
-This package makes it possible to seamlessly switch between a `devCanister` and `replicaCanister` depending on the environment.
-
-For example, you can use the `import.meta.env` property available in [Vite](https://vitejs.dev/):
-
-```ts
-import { devCanister, ic } from 'ic0';
-
-const backend = import.meta.env.DEV
-    ? devCanister('backend')
-    : ic('rrkah-fqaaa-aaaaa-aaaaq-cai'); // Deployed canister
-
-console.log(await backend.call('getValue')); // Call the `getValue()` method on the deployed canister when in production
 ```
 
 ## Mock Canisters
