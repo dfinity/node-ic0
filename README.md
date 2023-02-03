@@ -116,5 +116,5 @@ Check out the following GitHub repositories for more IC-related npm packages:
 
 - [agent-js](https://github.com/dfinity/agent-js): a collection of npm packages for building on the Internet Computer
 - [node-motoko](https://github.com/dfinity/node-motoko): run Motoko programs directly in the browser
-- [mo-dev](https://github.com/dfinity/motoko-dev-server): a live-reload server for local Motoko dapp development
+- [mo-dev](https://npmjs.com/package/mo-dev): a live-reload server for local Motoko dapp development
 - [@infu/icblast](https://github.com/infu/icblast): a community-built library for exploring the IC and writing integration tests
