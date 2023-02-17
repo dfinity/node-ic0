@@ -5,7 +5,7 @@ import { mockCanister, MockCanister, Mocks } from './canister/mockCanister';
 import { deferredReplica, replica } from './replica';
 import { Canister, Network, Replica } from './types';
 
-const ic = deferredReplica('https://ic0.app');
+const ic = deferredReplica('https://icp-api.io');
 const local = deferredReplica('http://localhost:4943', { local: true });
 
 // Configure exports for TS, CommonJS, and ESM
