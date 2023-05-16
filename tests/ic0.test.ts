@@ -1,6 +1,6 @@
 import ic from '../src';
 
-describe('mainnet (https://ic0.app)', () => {
+describe('mainnet', () => {
     test.skip('ledger', async () => {
         const ledger = ic('ryjl3-tyaaa-aaaaa-aaaba-cai');
 
