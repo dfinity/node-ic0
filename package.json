@@ -1,6 +1,6 @@
 {
     "name": "ic0",
-    "version": "0.2.7",
+    "version": "0.2.8",
     "description": "An easy-to-use JavaScript API for the Internet Computer.",
     "author": "DFINITY Foundation",
     "license": "Apache-2.0",
@@ -18,10 +18,10 @@
         "prepublishOnly": "run-s build test"
     },
     "dependencies": {
-        "@dfinity/agent": "^0.15.1",
-        "@dfinity/candid": "^0.15.1",
-        "@dfinity/identity": "^0.15.1",
-        "@dfinity/principal": "^0.15.1",
+        "@dfinity/agent": "^0.19.2",
+        "@dfinity/candid": "^0.19.2",
+        "@dfinity/identity": "^0.19.2",
+        "@dfinity/principal": "^0.19.2",
         "cross-fetch": "^3.1.5"
     },
     "devDependencies": {
