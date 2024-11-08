@@ -24,8 +24,8 @@ export class AgentCanister implements Canister {
         if (!js) {
             const source = await fetchCandid(this.id, this.agent);
             // TODO: use local Candid UI canister
-            const didJsAgent = new HttpAgent({
-                host: 'https://ic0.app',
+            const didJsAgent = HttpAgent.createSync({
+                host: 'https://icp0.io',
                 fetch,
             }); // mainnet
             const didJsCanisterId = 'a4gq6-oaaaa-aaaab-qaa4q-cai';
@@ -60,19 +60,7 @@ export class AgentCanister implements Canister {
     async call(method: string, ...args: any[]): Promise<any> {
         const actor = await this._fetchActor();
         const result = await actor[method](...args);
-
         return result;
-
-        // // Convert to JSON-like object
-        // return JSON.parse(
-        //     JSON.stringify(result, (_key, value) => {
-        //         if (typeof value === 'bigint') {
-        //             return value.toString();
-        //         }
-        //         // TODO: Principal, Blob, etc.
-        //         return value;
-        //     }),
-        // );
     }
 }
 
