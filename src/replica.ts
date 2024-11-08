@@ -5,16 +5,16 @@ import { Replica } from './types';
 
 export type AgentReplica = Replica<AgentCanister>;
 
-// Define an IC replica from the given hostname (e.g. `https://ic0.app`)
+// Define an IC replica from the given hostname (e.g. `https://icp0.io`)
 export const replica = (
     host?: string | HttpAgent | undefined,
     options: { local?: boolean } = {},
 ): AgentReplica => {
     let agent: HttpAgent;
     if (!host) {
-        agent = new HttpAgent({ fetch });
+        agent = HttpAgent.createSync({ fetch });
     } else if (typeof host === 'string') {
-        agent = new HttpAgent({ host, fetch });
+        agent = HttpAgent.createSync({ host, fetch });
     } else if (host instanceof HttpAgent) {
         agent = host;
     } else {
