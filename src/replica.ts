@@ -5,7 +5,7 @@ import { Replica } from './types';
 
 export type AgentReplica = Replica<AgentCanister>;
 
-// Define an IC replica from the given hostname (e.g. `https://icp0.io`)
+// Define an IC replica from the given hostname (e.g. `https://icp-api.io`)
 export const replica = (
     host?: string | HttpAgent | undefined,
     options: { local?: boolean } = {},
