@@ -25,7 +25,7 @@ export class AgentCanister implements Canister {
             const source = await fetchCandid(this.id, this.agent);
             // TODO: use local Candid UI canister
             const didJsAgent = HttpAgent.createSync({
-                host: 'https://icp0.io',
+                host: 'https://icp-api.io',
                 fetch,
             }); // mainnet
             const didJsCanisterId = 'a4gq6-oaaaa-aaaab-qaa4q-cai';
