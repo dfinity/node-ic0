@@ -13,7 +13,7 @@
     "scripts": {
         "build": "rimraf ./lib && tsc -p .",
         "prepare": "husky install",
-        "test": "jest && node examples/ledger.js",
+        "test": "jest && node examples/ledger.js && cd examples/vite && npm i && npm run build",
         "precommit": "lint-staged",
         "prepublishOnly": "run-s build test"
     },
