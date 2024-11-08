@@ -60,19 +60,7 @@ export class AgentCanister implements Canister {
     async call(method: string, ...args: any[]): Promise<any> {
         const actor = await this._fetchActor();
         const result = await actor[method](...args);
-
         return result;
-
-        // // Convert to JSON-like object
-        // return JSON.parse(
-        //     JSON.stringify(result, (_key, value) => {
-        //         if (typeof value === 'bigint') {
-        //             return value.toString();
-        //         }
-        //         // TODO: Principal, Blob, etc.
-        //         return value;
-        //     }),
-        // );
     }
 }
 
